@@ -28,8 +28,8 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-center">25</td>
-            <td class="text-center">100</td>
+            <td class="text-center" id="qtyBox">25</td>
+            <td class="text-center" id="qtyTag">100</td>
             <td class="d-none">@mdo</td>
           </tr>
          
@@ -57,6 +57,9 @@
       </table>
 
       <script>
+
+        const labelQtyBox=document.getElementById("qtyBox")
+        const labelQtyTag=document.getElementById("qtyTag")
         // Obtener el elemento input por su ID
         const input = document.getElementById('code');
         console.log(input)
@@ -70,7 +73,8 @@
                 
                 const inputValue = input.value;
                 if (inputValue.trim()) {
-                    results.push(inputValue);
+                    console.log(convertirData(inputValue))
+                    results.push(convertirData(inputValue));
                     input.value = '';
                 }
                 event.preventDefault();
@@ -79,19 +83,105 @@
             renderTable()
            
         });
+/*
+ let data = [1,2,6,1,2,5,9,'33','33'];
 
+  const dataArr = new Set(data);
+
+  let result = [...dataArr];
+
+  console.log(result); //[1,2,6,5,9,'33']*/
         const renderTable = () => {
+          const cantCajas= new Set()
+          
             resultsTable.innerHTML = ''; 
+            let resultadoCantCaja
             results.forEach((result, index) => {
+              cantCajas.add(result.box)
                 const row = resultsTable.insertRow();
                 row.insertCell(0).textContent = index + 1; 
-                row.insertCell(1).textContent = result; 
-                row.insertCell(2).textContent = result; 
+                row.insertCell(1).textContent = result.valueCodificado; 
+                row.insertCell(2).textContent = result.box; 
+                
             });
+            console.log(cantCajas);
+            labelQtyTag.innerHTML=results.length
+            labelQtyBox.innerHTML=cantCajas.size
+        };
+
+	const convertirData = (cellData) => {
+		event.preventDefault();
+            let valueCodificado = '';
+            let result = {
+        box: '',
+       exadecimal:'',
+       valueCodificado:''
+    };
+    let arrResult=[]
+
+            try {
+        if (cellData.startsWith("A")) {
+            const numPacking = parseInt(cellData.substring(12, 17), 16);
+            const decodedPacking = String(numPacking).padStart(5, '0');
+            valueCodificado += decodedPacking + ";";
+
+            const numNosequees = parseInt(cellData.substring(17, 23), 16);
+            const decodedNosequees = String(numNosequees).padStart(7, '0');
+            valueCodificado += decodedNosequees.slice(0, 6) + "-" + decodedNosequees.slice(6) + ";";
+
+            const uno = parseInt(cellData[23], 16);
+            valueCodificado += uno + ";";
+
+            const B = cellData.substring(24, 26);
+            const asciiB = hexToAscii(B);
+            valueCodificado += asciiB + ";";
+
+            const dos = parseInt(cellData[26], 16);
+            valueCodificado += dos + ";";
+
+            const numId = parseInt(cellData.substring(27, 34), 16);
+            const decodedId = String(numId).padStart(6, '0');
+            valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
+            result.box=valueCodificado.slice(21,26)
+            result.exadecimal=cellData
+            result.valueCodificado=valueCodificado
+
+        } else if (cellData.startsWith("B")) {
+            const PI = cellData.substring(3, 7);
+            const decodedPI = hexToAscii(PI);
+            valueCodificado += decodedPI + ";";
+
+            const B = cellData.substring(7, 9);
+            const asciiB = hexToAscii(B);
+            valueCodificado += asciiB + ";";
+
+            const numId = parseInt(cellData.substring(9, 16), 16);
+            const codedId = String(numId).padStart(9, '0');
+            valueCodificado += codedId.slice(0, 8) + "-" + codedId.slice(8) + ";";
+
+            const _S23EI = cellData.substring(16, 24);
+            const S = hexToAscii(_S23EI.substring(0, 2));
+            const _23 = String(parseInt(_S23EI.substring(2, 4), 16)).padStart(2, '0');
+            const EI = hexToAscii(_S23EI.substring(4, 9));
+            valueCodificado += S + _23 + EI + ";";
+
+            const _L23EI = cellData.substring(24, 32);
+            const L = hexToAscii(_L23EI.substring(0, 2));
+            const _23L = String(parseInt(_L23EI.substring(2, 4), 16)).padStart(2, '0');
+            const EIL = hexToAscii(_L23EI.substring(4, 9));
+            valueCodificado += L + _23L + EIL;
+        }
+    } catch (e) {
+        console.error("Error en la conversión:", e);
+        valueCodificado = "Error en la conversión";
+    }
+    
+    return result;
         };
         
         event.preventDefault();
     </script>
+    <script src="prueba.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
