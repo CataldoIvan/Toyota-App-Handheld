@@ -1,126 +1,194 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-        <div class="container-fluid">
-          <a class="navbar-brand">Toyota</a>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" id="code" type="search" placeholder="Code" aria-label="Search">
-            <button class="btn btn-danger" id="mostrar" type="submit" >Mostrar</button>
-          </form>
-        </div>
-      </nav>
-    <h4 class="text-center">Resultados</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            
-            <th class="text-center" scope="col">Cant Cajas</th>
-            <th class="text-center" scope="col">Qty Tags leidos</th>
-            <th class="d-none" scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-center" id="qtyBox">25</td>
-            <td class="text-center" id="qtyTag">100</td>
-            <td class="d-none">@mdo</td>
-          </tr>
-         
-        </tbody>
-      </table>
-      <h4>Detalle Lecturas</h4>
-      <table class="table detail">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col" class="header-hex">Cod Heax</th>
-            <th scope="col" class="header-cod">Cod Caja</th>
-           
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td class="row-hex">Mark</td>
-            <td class="header-box">Otto</td>
-            
-          </tr>
-          
-        </tbody>
-      </table>
 
-      <script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hanheld Toyota</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-        const labelQtyBox=document.getElementById("qtyBox")
-        const labelQtyTag=document.getElementById("qtyTag")
-        // Obtener el elemento input por su ID
-        const input = document.getElementById('code');
-        console.log(input)
-        const resultsTable = document.querySelector('.table.detail tbody');
+</head>
 
-        const results = [];
+<style>
+  * {
+    font-size: 0.9rem;
+  }
+</style>
 
-        input.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter' || event.keyCode === 13) {
-                // Capturar el valor del input
-                
-                const inputValue = input.value;
-                if (inputValue.trim()) {
-                    console.log(convertirData(inputValue))
-                    results.push(convertirData(inputValue));
-                    input.value = '';
-                }
-                event.preventDefault();
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary  px-1">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/index.html">
+        <img src="/toyotaicon.svg" alt="Logo" width="45" height="38" class="d-inline-block align-text-top">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Inventario Tags</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Control cambio Tag</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/check-tags.html">Check 4 tags</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link "  href="/log.html">Registro del sistema</a>
+          </li>
+        </ul>
+      </div>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" id="inputCode" type="search" placeholder="Code" aria-label="Search">
+        <button class="btn btn-danger" id="download-btn" type="submit">Descargar</button>
+      </form>
+    </div>
+  </nav>
 
+  <h4 class="text-center">Inventario - Resultados</h2>
+    <table class="table">
+      <thead>
+        <tr>
+
+          <th class="text-center" scope="col">Cant Cajas</th>
+          <th class="text-center" scope="col">Qty Tags leidos</th>
+          <th class="d-none" scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center" id="qtyBox">0</td>
+          <td class="text-center" id="qtyTag">0</td>
+          <td class="d-none">@mdo</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <h4>Detalle Lecturas</h4>
+    <table class="table detail">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" class="header-hex">Cod Heax</th>
+          <th scope="col" class="header-cod">Cod Caja</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"></th>
+          <td class="row-hex"></td>
+          <td class="header-box"></td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+
+
+
+    <script>
+
+      const labelQtyBox = document.getElementById("qtyBox")
+      const labelQtyTag = document.getElementById("qtyTag")
+      // Obtener el elemento input por su ID
+      const input = document.getElementById('inputCode');
+      input.focus()
+      console.log(input)
+      const resultsTable = document.querySelector('.table.detail tbody');
+
+      const results = [];
+      // límite de registros de LOGS
+      const MAX_LOG_ENTRIES = 100;
+
+      // Función para verificar si el objeto ya existe
+      function existsInArray(array, item, attribute) {
+        return array.some(element => element[attribute] === item[attribute]);
+      }
+
+
+
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+          // Capturar el valor del input
+          const inputValue = input.value;
+          if (inputValue.length==32) {
+            //console.log(convertirData(inputValue))
+            let dataConvert = convertirData(inputValue.trim())
+            // console.log(dataConvert);
+            if (!existsInArray(results, dataConvert, "valueCodificado")) {
+              // Si no existe, agregar al array
+              results.push(dataConvert);
+              console.log("Objeto agregado:", dataConvert);
+            } else {
+              console.log("El objeto con valueCodificado ya existe en el array.");
             }
-            renderTable()
-           
-        });
-/*
- let data = [1,2,6,1,2,5,9,'33','33'];
 
-  const dataArr = new Set(data);
+            input.value = '';
+          }else{
+            addLogEntry({
+            timestamp: getFormattedTimestamp(),
+            message:'El codigo no tiene la qty correcta:',
+            valueCodificado:inputValue           
+          });
+          input.value = '';
 
-  let result = [...dataArr];
-
-  console.log(result); //[1,2,6,5,9,'33']*/
-        const renderTable = () => {
-          const cantCajas= new Set()
+          }
           
-            resultsTable.innerHTML = ''; 
-            let resultadoCantCaja
-            results.forEach((result, index) => {
-              cantCajas.add(result.box)
-                const row = resultsTable.insertRow();
-                row.insertCell(0).textContent = index + 1; 
-                row.insertCell(1).textContent = result.valueCodificado; 
-                row.insertCell(2).textContent = result.box; 
-                
-            });
-            console.log(cantCajas);
-            labelQtyTag.innerHTML=results.length
-            labelQtyBox.innerHTML=cantCajas.size
+          event.preventDefault();
+
+          renderTable()
+        }
+
+      });
+
+      const renderTable = () => {
+        const cantCajas = new Set()
+
+        resultsTable.innerHTML = '';
+        let resultadoCantCaja
+        results.forEach((result, index) => {
+          cantCajas.add(result.box)
+          const row = resultsTable.insertRow();
+          row.insertCell(0).textContent = index + 1;
+          row.insertCell(1).textContent = result.valueCodificado;
+          row.insertCell(2).textContent = result.box;
+
+        });
+        console.log(cantCajas);
+        labelQtyTag.innerHTML = results.length
+        labelQtyBox.innerHTML = cantCajas.size
+      };
+
+      function hexToAscii(hex) {
+        let str = '';
+        for (let i = 0; i < hex.length; i += 2) {
+          str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
+        }
+        return str;
+      }
+
+
+      const convertirData = (cellData) => {
+        event.preventDefault();
+        let valueCodificado = '';
+        let result = {
+          box: '',
+          exadecimal: '',
+          valueCodificado: ''
         };
+        let arrResult = []
 
-	const convertirData = (cellData) => {
-		event.preventDefault();
-            let valueCodificado = '';
-            let result = {
-        box: '',
-       exadecimal:'',
-       valueCodificado:''
-    };
-    let arrResult=[]
-
-            try {
-        if (cellData.startsWith("A")) {
+        try {
+          if (cellData.startsWith("A")) {
             const numPacking = parseInt(cellData.substring(12, 17), 16);
             const decodedPacking = String(numPacking).padStart(5, '0');
             valueCodificado += decodedPacking + ";";
@@ -142,48 +210,119 @@
             const numId = parseInt(cellData.substring(27, 34), 16);
             const decodedId = String(numId).padStart(6, '0');
             valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
-            result.box=valueCodificado.slice(21,26)
-            result.exadecimal=cellData
-            result.valueCodificado=valueCodificado
+            result.box = valueCodificado.slice(21, 26)
+            result.exadecimal = cellData
+            result.valueCodificado = valueCodificado
+            addLogEntry({
+            timestamp: getFormattedTimestamp(),
+            message: 'Nuevo registro',valueCodificado
+           
+          });
 
-        } else if (cellData.startsWith("B")) {
-            const PI = cellData.substring(3, 7);
-            const decodedPI = hexToAscii(PI);
-            valueCodificado += decodedPI + ";";
-
-            const B = cellData.substring(7, 9);
-            const asciiB = hexToAscii(B);
-            valueCodificado += asciiB + ";";
-
-            const numId = parseInt(cellData.substring(9, 16), 16);
-            const codedId = String(numId).padStart(9, '0');
-            valueCodificado += codedId.slice(0, 8) + "-" + codedId.slice(8) + ";";
-
-            const _S23EI = cellData.substring(16, 24);
-            const S = hexToAscii(_S23EI.substring(0, 2));
-            const _23 = String(parseInt(_S23EI.substring(2, 4), 16)).padStart(2, '0');
-            const EI = hexToAscii(_S23EI.substring(4, 9));
-            valueCodificado += S + _23 + EI + ";";
-
-            const _L23EI = cellData.substring(24, 32);
-            const L = hexToAscii(_L23EI.substring(0, 2));
-            const _23L = String(parseInt(_L23EI.substring(2, 4), 16)).padStart(2, '0');
-            const EIL = hexToAscii(_L23EI.substring(4, 9));
-            valueCodificado += L + _23L + EIL;
+          }
+        } catch (e) {
+          console.error("Error en la conversión:", e);
+          addLogEntry({
+            timestamp: getFormattedTimestamp(),
+            message: 'Error en la conversión', e
+           
+          });
+          
         }
-    } catch (e) {
-        console.error("Error en la conversión:", e);
-        valueCodificado = "Error en la conversión";
+
+        input.focus()
+        return result;
+      };
+
+
+
+
+      /*LOG DE SISTEMA*/
+      
+
+      function getFormattedTimestamp() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11, por eso sumamos 1
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      }
+      // Función para obtener el log desde localStorage
+      function getLog() {
+        let log = localStorage.getItem('systemLog');
+        return log ? JSON.parse(log) : [];
+      }
+
+      // Función para guardar el log en localStorage
+      function saveLog(log) {
+        localStorage.setItem('systemLog', JSON.stringify(log));
+      }
+
+      // Función para agregar un nuevo registro al log
+      function addLogEntry(entry) {
+        let log = getLog();
+
+        // Verificar si se ha alcanzado el límite de registros
+        if (log.length >= MAX_LOG_ENTRIES) {
+          // Eliminar el registro más antiguo (primer elemento del array)
+          log.shift();
+        }
+
+        // Agregar el nuevo registro al final del array
+        log.push(entry);
+
+        // Guardar el log actualizado en localStorage
+        saveLog(log);
+      }
+
+      // Ejemplo de cómo agregar un nuevo registro
+      addLogEntry({
+        timestamp: getFormattedTimestamp(),
+        message: 'Nuevo evento registrado',
+        // Puedes agregar más campos según sea necesario
+      });
+
+      // Función para obtener todos los registros del log
+      function getAllLogEntries() {
+        return getLog();
+      }
+
+      // Función para formatear los datos del array como una cadena de texto
+    function formatLogData(data) {
+      return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
     }
-    
-    return result;
-        };
-        
-        event.preventDefault();
+   
+
+    // Función para descargar el archivo TXT
+    function downloadTxtFile(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+      event.preventDefault();
+      const formattedLog = formatLogData(results);
+      downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
+    });
+
     </script>
-    <script src="prueba.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"></script>
+
+
 </body>
+
 </html>
