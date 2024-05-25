@@ -96,6 +96,16 @@
 
 
     <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registrado con éxito:', registration.scope);
+      }, (error) => {
+        console.log('Service Worker registro fallido:', error);
+      });
+  });
+}
 
       const labelQtyBox = document.getElementById("qtyBox")
       const labelQtyTag = document.getElementById("qtyTag")
