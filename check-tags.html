@@ -41,7 +41,7 @@
             <a class="nav-link " href="./check-tags.html">Check 4 tags</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link "  href="./log.html">Registro del sistema</a>
+            <a class="nav-link " href="./log.html">Registro del sistema</a>
           </li>
         </ul>
       </div>
@@ -53,7 +53,29 @@
   </nav>
 
   <h3 class="text-center">Check 4 tags</h3>
-  <h4>Detalle Lecturas: <span id="codeBox"></span></h4>
+  <table class="table">
+    <thead>
+      <tr>
+
+        <th class="text-center" scope="col">Caja</th>
+        <th class="text-center" scope="col">Proveedor</th>
+        <th class="" scope="col">Tag</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr>
+        <td class="text-center" id="BoxToCheck">0</td>
+        <td class="text-center" id="supToCheck">0</td>
+        <td class="" id="tagToCheck">0</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="alert alert-success"  role="alert" style="display: none;">
+    Las cuatro caras de la caja fueron leidas!
+  </div>
+  <h4>Detalle Lecturas</h4>
   <table class="table detail">
     <thead>
       <tr>
@@ -73,15 +95,31 @@
 
     </tbody>
   </table>
+  <h4 class="tittle-error" style="color: red;">Errores de lectura</h4>
+  <table class='table detail error'>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" class="header-cod">Cod Caja</th>
 
+      </tr>
+    </thead>
+    <tbody id="errorBody">
+      <tr>
+        <th scope="row" class="row-num-error"></th>
+        <td class="row-box-error text-danger"></td>
+      </tr>
+
+    </tbody>
+  </table>
 
 
 
   <script>
 
-function resert(){
-  location.reload();
-}
+    function resert() {
+      location.reload();
+    }
     // Obtener el elemento input por su ID
     const input = document.getElementById('inputCode');
     input.focus()
@@ -93,9 +131,21 @@ function resert(){
     const MAX_LOG_ENTRIES = 100;
 
     //Variable para controlar el codigo de la caja
-    let boxToCheck = null
+    let dataToEvaluate = null
 
-    const labelBox = document.getElementById('codeBox')
+    //en el caso que el tag leido no coincida con el evaluado, se almacena aca
+    let lecturuasErrorneas = []
+
+    const alertOk = document.querySelector('.alert.alert-success')
+    const labelTag = document.getElementById('tagToCheck')
+    const labelBox = document.getElementById('BoxToCheck')
+    const labelSup = document.getElementById('supToCheck')
+    const labelTittleErr = document.querySelector('.tittle-error')
+    labelTittleErr.style.display = 'none'
+    const tableError = document.querySelector('#errorBody')
+    const tableE = document.querySelector('table.detail.error')
+    tableE.style.display = 'none'
+
 
     // Función para verificar si el objeto ya existe
     function existsInArray(array, item, attribute) {
@@ -103,69 +153,24 @@ function resert(){
     }
 
     function addIfNotExists(array, newObj) {
-  const exists = array.some(item => item.valueCodificado === newObj.valueCodificado);
-  if (!exists) {
-    array.push(newObj);
-    console.log("Objeto agregado:", newObj);
-  } else {
-    console.log("El objeto ya existe:", newObj);
-  }
-}
-
-    input.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.keyCode === 13) {
-        // Capturar el valor del input
-        const inputValue = input.value;
-        if (inputValue.length == 32) {
-          //console.log(convertirData(inputValue))
-          let dataConvert = convertirData(inputValue.trim())
-          // console.log(dataConvert);
-          if (!existsInArray(results, dataConvert, "valueCodificado")) {
+      const exists = array.some(item => item.valueCodificado === newObj.valueCodificado);
+      if (!exists) {
+        array.push(newObj);
+        console.log("Objeto agregado:", newObj);
+        addLogEntry({
+          timestamp: getFormattedTimestamp(),
+          message: "Objeto agregado:", newObj
+        });
+      } else {
 
 
-            // Si no existe, agregar al array
-            addIfNotExists(results, dataConvert);
-          } else {
-            console.log("El objeto con valueCodificado ya existe en el array.");
-          }
-
-          input.value = '';
-        } else {
-          addLogEntry({
-            timestamp: getFormattedTimestamp(),
-            message: 'El codigo no tiene la qty correcta:',
-            valueCodificado: inputValue
-          });
-          input.value = '';
-
-        }
-
-        event.preventDefault();
-
-        renderTable()
+        console.log("El objeto ya existe:", newObj);
+        addLogEntry({
+          timestamp: getFormattedTimestamp(),
+          message: "ERROR:El objeto ya existe:", newObj
+        });
       }
-
-    });
-
-    const renderTable = () => {
-      const cantCajas = new Set()
-
-      results.sort((a, b) => a.valueCodificado.localeCompare(b.valueCodificado));
-      console.log(results);
-      resultsTable.innerHTML = '';
-      let resultadoCantCaja
-      results.forEach((result, index) => {
-        cantCajas.add(result.box)
-        const row = resultsTable.insertRow();
-        row.insertCell(0).textContent = index + 1;
-        row.insertCell(1).textContent = result.valueCodificado;
-        row.insertCell(2).textContent = "Cara:" + result.valueCodificado.slice(27, 28);
-
-      });
-      console.log(cantCajas);
-
-    };
-
+    }
     function hexToAscii(hex) {
       let str = '';
       for (let i = 0; i < hex.length; i += 2) {
@@ -183,7 +188,7 @@ function resert(){
         exadecimal: '',
         valueCodificado: ''
       };
-      let lecturuasErrorneas = []
+
 
 
       try {
@@ -210,19 +215,15 @@ function resert(){
           const decodedId = String(numId).padStart(6, '0');
           valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
           //verifico si aun no hay caja a copntrolar asigno a la variable
-          if (boxToCheck === null) {
-            boxToCheck = valueCodificado.slice(21, 26)
+          if (dataToEvaluate === null) {
+            dataToEvaluate = {
+              box: valueCodificado.slice(0, 5),
+              supplier: valueCodificado.slice(6, 14),
+              tag: valueCodificado.slice(21, 26)
+            }
+          }
 
-            labelBox.innerHTML = boxToCheck
-            result.box = valueCodificado.slice(21, 26)
-            result.exadecimal = cellData
-            result.valueCodificado = valueCodificado
-            addLogEntry({
-              timestamp: getFormattedTimestamp(),
-              message: 'Nuevo registro ', valueCodificado
-
-            });
-          } else if (boxToCheck === valueCodificado.slice(21, 26)) {
+          if (dataToEvaluate.tag === valueCodificado.slice(21, 26) && dataToEvaluate.supplier === valueCodificado.slice(6, 14) && dataToEvaluate.box === valueCodificado.slice(0, 5)) {
             result.box = valueCodificado.slice(21, 26)
             result.exadecimal = cellData
             result.valueCodificado = valueCodificado
@@ -235,9 +236,9 @@ function resert(){
             lecturuasErrorneas.push(valueCodificado)
             addLogEntry({
               timestamp: getFormattedTimestamp(),
-              message: `La caja no pertenece a los tags evaluados: ${valueCodificado}`
-
+              message: `ERROR:La caja no pertenece a los tags evaluados:`, valueCodificado
             });
+            return null
           }
 
 
@@ -246,7 +247,7 @@ function resert(){
         console.error("Error en la conversión:", e);
         addLogEntry({
           timestamp: getFormattedTimestamp(),
-          message: 'Error en la conversión', e
+          message: 'ERROR:Error en la conversión', e
 
         });
 
@@ -255,15 +256,82 @@ function resert(){
       input.focus()
       return result;
     };
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        // Capturar el valor del input
+        const inputValue = input.value;
+        if (inputValue.length == 32) {
+          //console.log(convertirData(inputValue))
+          let dataConvert = convertirData(inputValue.trim())
+          if (dataConvert != null) addIfNotExists(results, dataConvert);
 
-/* VERIFICAR LAS 4 CARAS DE LA CAJA*/
+          input.value = '';
+        } else {
+          addLogEntry({
+            timestamp: getFormattedTimestamp(),
+            message: 'El codigo no tiene la qty correcta:',
+            valueCodificado: inputValue
+          });
+          input.value = '';
 
-function check4carasCaja(arr) {
-  arr.forEach((clave,value)=>{
+        }
 
-  })
-  
-}
+        event.preventDefault();
+
+        renderTable()
+        renderTableError()
+      }
+
+    });
+
+    const renderTable = () => {
+
+      labelTag.textContent = results[0].valueCodificado.slice(21, 26)
+      labelBox.textContent  = results[0].valueCodificado.slice(0, 5)
+      labelSup.textContent  = results[0].valueCodificado.slice(6, 14)
+      results.sort((a, b) => a.valueCodificado.localeCompare(b.valueCodificado));
+      resultsTable.innerHTML = '';
+
+      results.forEach((result, index) => {
+        const row = resultsTable.insertRow();
+        row.insertCell(0).textContent = index + 1;
+        row.insertCell(1).textContent = result.valueCodificado;
+        row.insertCell(2).textContent = "Cara:" + result.valueCodificado.slice(27, 28);
+        
+      });
+      console.log("🚀 ~ results.forEach ~ results:", results.length)
+      
+      if (results.length==4) {alertOk.style.display='block'}
+
+
+    };
+    const renderTableError = () => {
+
+
+      tableError.innerHTML = '';
+
+      lecturuasErrorneas.forEach((valor, clave) => {
+        labelTittleErr.style.display = 'block'
+        tableE.style.display = 'block'
+        const rowErr = tableError.insertRow()
+        rowErr.style.color = '#DC3545'
+        rowErr.insertCell(0).textContent = clave + 1
+        rowErr.insertCell(1).textContent = valor
+
+      })
+
+    };
+
+
+
+    /* VERIFICAR LAS 4 CARAS DE LA CAJA*/
+
+    function check4carasCaja(arr) {
+      arr.forEach((clave, value) => {
+
+      })
+
+    }
 
     /*LOG DE SISTEMA*/
 
@@ -307,21 +375,16 @@ function check4carasCaja(arr) {
       saveLog(log);
     }
 
-    // Ejemplo de cómo agregar un nuevo registro
-    addLogEntry({
-      timestamp: getFormattedTimestamp(),
-      message: 'Nuevo evento registrado',
-      // Puedes agregar más campos según sea necesario
-    });
+
 
     // Función para obtener todos los registros del log
     function getAllLogEntries() {
       return getLog();
     }
 
-  
 
-   
+
+
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

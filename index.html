@@ -41,7 +41,7 @@
             <a class="nav-link " href="./check-tags.html">Check 4 tags</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link "  href="./log.html">Registro del sistema</a>
+            <a class="nav-link " href="./log.html">Registro del sistema</a>
           </li>
         </ul>
       </div>
@@ -120,7 +120,7 @@
         if (event.key === 'Enter' || event.keyCode === 13) {
           // Capturar el valor del input
           const inputValue = input.value;
-          if (inputValue.length==32) {
+          if (inputValue.length == 32) {
             //console.log(convertirData(inputValue))
             let dataConvert = convertirData(inputValue.trim())
             // console.log(dataConvert);
@@ -128,21 +128,31 @@
               // Si no existe, agregar al array
               results.push(dataConvert);
               console.log("Objeto agregado:", dataConvert);
+              addLogEntry({
+                timestamp: getFormattedTimestamp(),
+                message: 'Nuevo registro agregado', dataConvert
+
+              });
             } else {
+              addLogEntry({
+                timestamp: getFormattedTimestamp(),
+                message: 'ERROR:La etiqueta,ya fue escaneada anteriormente', dataConvert
+
+              });
               console.log("El objeto con valueCodificado ya existe en el array.");
             }
 
             input.value = '';
-          }else{
+          } else {
             addLogEntry({
-            timestamp: getFormattedTimestamp(),
-            message:'El codigo no tiene la qty correcta:',
-            valueCodificado:inputValue           
-          });
-          input.value = '';
+              timestamp: getFormattedTimestamp(),
+              message: 'ERROR:El codigo no tiene la qty correcta:',
+              valueCodificado: inputValue
+            });
+            input.value = '';
 
           }
-          
+
           event.preventDefault();
 
           renderTable()
@@ -213,23 +223,16 @@
             result.box = valueCodificado.slice(21, 26)
             result.exadecimal = cellData
             result.valueCodificado = valueCodificado
-            addLogEntry({
-            timestamp: getFormattedTimestamp(),
-            message: 'Nuevo registro',valueCodificado
-           
-          });
+
 
           }
         } catch (e) {
           console.error("Error en la conversión:", e);
           addLogEntry({
             timestamp: getFormattedTimestamp(),
-            message: 'Error en la conversión', e
-           
+            message: 'ERROR:Error en la conversión', e
           });
-          
         }
-
         input.focus()
         return result;
       };
@@ -238,7 +241,7 @@
 
 
       /*LOG DE SISTEMA*/
-      
+
 
       function getFormattedTimestamp() {
         const now = new Date();
@@ -280,11 +283,7 @@
       }
 
       // Ejemplo de cómo agregar un nuevo registro
-      addLogEntry({
-        timestamp: getFormattedTimestamp(),
-        message: 'Nuevo evento registrado',
-        // Puedes agregar más campos según sea necesario
-      });
+
 
       // Función para obtener todos los registros del log
       function getAllLogEntries() {
@@ -292,27 +291,27 @@
       }
 
       // Función para formatear los datos del array como una cadena de texto
-    function formatLogData(data) {
-      return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
-    }
-   
+      function formatLogData(data) {
+        return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
+      }
 
-    // Función para descargar el archivo TXT
-    function downloadTxtFile(filename, text) {
-      const blob = new Blob([text], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
 
-    document.getElementById('download-btn').addEventListener('click', () => {
-      event.preventDefault();
-      const formattedLog = formatLogData(results);
-      downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
-    });
+      // Función para descargar el archivo TXT
+      function downloadTxtFile(filename, text) {
+        const blob = new Blob([text], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      document.getElementById('download-btn').addEventListener('click', () => {
+        event.preventDefault();
+        const formattedLog = formatLogData(results);
+        downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
+      });
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
