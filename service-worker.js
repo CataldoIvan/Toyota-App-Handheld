@@ -1,10 +1,10 @@
 const CACHE_NAME = 'my-app-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/check-tags.html',
-  '/log.html',
-  '/toyotaicon.svg'
+  './',
+  './index.html',
+  './check-tags.html',
+  './log.html',
+  './toyotaicon.svg'
 ];
 
 self.addEventListener('install', (event) => {
