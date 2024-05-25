@@ -47,12 +47,12 @@
       </div>
       <form class="d-flex" role="search">
         <input class="form-control me-2" id="inputCode" type="search" placeholder="Code" aria-label="Search">
-        <button class="btn btn-danger" id="download-btn" onclick="resert()" type="submit">Resert</button>
+        <button class="btn btn-danger" id="reset-btn" >Resert</button>
       </form>
     </div>
   </nav>
 
-  <h3 class="text-center">Check 4 tags</h3>
+  <h3 class="text-center">Check 4 Tags</h3>
   <table class="table">
     <thead>
       <tr>
@@ -117,16 +117,16 @@
 
   <script>
 
-    function resert() {
-      location.reload();
-    }
-    // Obtener el elemento input por su ID
+    
+    
+    // Obtener el elemento input por su ID 
     const input = document.getElementById('inputCode');
+    const resetBtn = document.getElementById('reset-btn');
     input.focus()
     console.log(input)
     const resultsTable = document.querySelector('.table.detail tbody');
 
-    const results = [];
+    let results = [];
     // límite de registros de LOGS
     const MAX_LOG_ENTRIES = 100;
 
@@ -147,6 +147,10 @@
     tableE.style.display = 'none'
 
 
+    resetBtn.addEventListener('click',(e)=>{
+      e.preventDefault()
+      location.reload();
+ })
     // Función para verificar si el objeto ya existe
     function existsInArray(array, item, attribute) {
       return array.some(element => element[attribute] === item[attribute]);
