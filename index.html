@@ -101,15 +101,35 @@
 
     <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registrado con éxito:', registration.scope);
-      }, (error) => {
-        console.log('Service Worker registro fallido:', error);
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registrado con éxito:', registration.scope);
+
+            // Verificar si hay una nueva versión del Service Worker
+            registration.onupdatefound = () => {
+              const installingWorker = registration.installing;
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Nueva versión disponible
+                  console.log('Nueva versión disponible. Por favor, recarga la página.');
+                  if (confirm('Hay una nueva versión disponible. ¿Quieres actualizar?')) {
+                    window.location.reload();
+                  }
+                }
+              };
+            };
+          })
+          .catch((error) => {
+            console.log('Service Worker registro fallido:', error);
+          });
+
+        // Forzar la actualización del SW cuando hay una nueva versión
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          window.location.reload();
+        });
       });
-  });
-}
+    }
 
       const labelQtyBox = document.getElementById("qtyBox")
       const labelQtyTag = document.getElementById("qtyTag")
