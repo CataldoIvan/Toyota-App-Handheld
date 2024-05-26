@@ -22,7 +22,7 @@
       <a class="navbar-brand" href="./index.html">
         <img src="./toyotaicon.svg" alt="Logo" width="45" height="38" class="d-inline-block align-text-top">
       </a>
-      <h5 style="padding-top: 11px;">Check 4 tags</h5>
+      <h4 style="padding-top: 11px;">Cambio Tag</h4>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,12 +48,12 @@
       </div>
       <form class="d-flex" role="search">
         <input class="form-control me-2" id="inputCode" type="search" placeholder="Code" aria-label="Search">
-        <button class="btn btn-danger" id="reset-btn" >Resert</button>
+        <button class="btn btn-danger" id="reset-btn">Resert</button>
       </form>
     </div>
   </nav>
 
-  <h6 class="text-center">Cantidades</h6>
+  <h5 class="text-center">Tag a cambiar</h5>
   <table class="table">
     <thead>
       <tr>
@@ -63,40 +63,81 @@
         <th class="" scope="col">Tag</th>
       </tr>
     </thead>
-    
+
     <tbody>
       <tr>
-        <td class="text-center" id="BoxToCheck">0</td>
-        <td class="text-center" id="supToCheck">0</td>
-        <td class="" id="tagToCheck">0</td>
+        <td class="text-center" id="BoxToChange">0</td>
+        <td class="text-center" id="supToChange">0</td>
+        <td class="" id="tagToChange">0</td>
       </tr>
 
     </tbody>
   </table>
-  <div class="alert alert-success"  role="alert" style="display: none;">
-    Las cuatro caras de la caja fueron leidas!
-  </div>
-  <h4>Detalle Lecturas</h4>
+
   <table class="table detail">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col" class="header-hex">Cod Heax</th>
-        <th scope="col" class="header-cod">Cod Caja</th>
+        <th scope="col" class="header-hex ">Codigo Tag</th>
 
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row"></th>
-        <td class="row-hex"></td>
-        <td class="header-box"></td>
+        <td class="row-hex text-center"></td>
 
       </tr>
 
     </tbody>
   </table>
-  <h4 class="tittle-error" style="color: red;">Errores de lectura</h4>
+
+  <!--style="display: none;"-->
+    <div class="alert " role="alert" >
+    
+  </div>
+
+  <section class="tagChangedSection" style="display: none">
+  <h5 class="text-center">Tag Cambiada</h5>
+  <table class="table TagChangedQty" >
+    <thead>
+      <tr>
+
+        <th class="text-center" scope="col">Caja</th>
+        <th class="text-center" scope="col">Proveedor</th>
+        <th class="" scope="col">Tag</th>
+      </tr>
+    </thead>
+    <!--************************-->
+    <tbody>
+      <tr>
+        <td class="text-center" id="BoxChanged">0</td>
+        <td class="text-center" id="supChanged">0</td>
+        <td class="" id="tagChanged">0</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <table class="table TagChangedDetail" >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" class="header-hex ">Codigo Tag</th>
+
+      </tr>
+    </thead>
+    <tbody id="tableTagChangedBody">
+      <tr>
+        <th scope="row"></th>
+        <td class="row-hex text-center"></td>
+
+      </tr>
+
+    </tbody>
+  </table>
+</section>
+
+  <h4 class="tittle-error" style="color: red;">Lecturas Descartadas</h4>
   <table class='table detail error'>
     <thead>
       <tr>
@@ -118,204 +159,192 @@
 
   <script>
 
-    
-    
+
+
     // Obtener el elemento input por su ID 
     const input = document.getElementById('inputCode');
     const resetBtn = document.getElementById('reset-btn');
     input.focus()
-    console.log(input)
-    const resultsTable = document.querySelector('.table.detail tbody');
+    const resultsTable = document.querySelector('.table.detail tbody');tableTagChangedBody
+    const resultsTagChanged = document.querySelector('#tableTagChangedBody');
 
     let results = [];
     // límite de registros de LOGS
     const MAX_LOG_ENTRIES = 100;
 
     //Variable para controlar el codigo de la caja
-    let dataToEvaluate = null
+    let inputTagToChange = null
+    //Variable para controlar el codigo de la caja
+    let inputTagChanged = null
 
     //en el caso que el tag leido no coincida con el evaluado, se almacena aca
-    let lecturuasErrorneas = []
+    let lecturasAdiocionales = []
 
-    const alertOk = document.querySelector('.alert.alert-success')
-    const labelTag = document.getElementById('tagToCheck')
-    const labelBox = document.getElementById('BoxToCheck')
-    const labelSup = document.getElementById('supToCheck')
+    const alertHTML = document.querySelector('.alert')
+    const labelTag = document.getElementById('tagToChange')
+    const labelBox = document.getElementById('BoxToChange')
+    const labelSup = document.getElementById('supToChange')
+    const labelTagChan = document.getElementById('tagChanged')
+    const labelBoxChan = document.getElementById('BoxChanged')
+    const labelSupChan = document.getElementById('supChanged')
     const labelTittleErr = document.querySelector('.tittle-error')
     labelTittleErr.style.display = 'none'
+    //seleccion para mostra el resultado de la 2da lectura
     const tableError = document.querySelector('#errorBody')
+
+    const sectionChanged =document.querySelector('.tagChangedSection')
+
     const tableE = document.querySelector('table.detail.error')
     tableE.style.display = 'none'
 
-
-    resetBtn.addEventListener('click',(e)=>{
+    function setMessage(alert,msg,addClass) {
+      alert.classList.remove('alert-warning')
+      alert.style.display='block'
+      alert.classList.add(addClass)
+      alert.textContent=msg
+      
+    }
+    
+    resetBtn.addEventListener('click', (e) => {
       //e.preventDefault()
       location.reload();
- })
-    // Función para verificar si el objeto ya existe
-    function existsInArray(array, item, attribute) {
-      return array.some(element => element[attribute] === item[attribute]);
-    }
-
-    function addIfNotExists(array, newObj) {
-      const exists = array.some(item => item.valueCodificado === newObj.valueCodificado);
-      if (!exists) {
-        array.push(newObj);
-        console.log("Objeto agregado:", newObj);
-        addLogEntry({
-          timestamp: getFormattedTimestamp(),
-          message: "Objeto agregado:", newObj
-        });
-      } else {
+    })
 
 
-        console.log("El objeto ya existe:", newObj);
-        addLogEntry({
-          timestamp: getFormattedTimestamp(),
-          message: "ERROR:El objeto ya existe:", newObj
-        });
-      }
-    }
-    function hexToAscii(hex) {
-      let str = '';
-      for (let i = 0; i < hex.length; i += 2) {
-        str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
-      }
-      return str;
-    }
 
-
-    const convertirData = (cellData) => {
+    const asigData = (inputData) => {
       event.preventDefault();
-      let valueCodificado = '';
-      let result = {
-        box: '',
-        exadecimal: '',
-        valueCodificado: ''
-      };
-
-
-
       try {
-        if (cellData.startsWith("A")) {
-          const numPacking = parseInt(cellData.substring(12, 17), 16);
-          const decodedPacking = String(numPacking).padStart(5, '0');
-          valueCodificado += decodedPacking + ";";
-
-          const numNosequees = parseInt(cellData.substring(17, 23), 16);
-          const decodedNosequees = String(numNosequees).padStart(7, '0');
-          valueCodificado += decodedNosequees.slice(0, 6) + "-" + decodedNosequees.slice(6) + ";";
-
-          const uno = parseInt(cellData[23], 16);
-          valueCodificado += uno + ";";
-
-          const B = cellData.substring(24, 26);
-          const asciiB = hexToAscii(B);
-          valueCodificado += asciiB + ";";
-
-          const dos = parseInt(cellData[26], 16);
-          valueCodificado += dos + ";";
-
-          const numId = parseInt(cellData.substring(27, 34), 16);
-          const decodedId = String(numId).padStart(6, '0');
-          valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
-          //verifico si aun no hay caja a copntrolar asigno a la variable
-          if (dataToEvaluate === null) {
-            dataToEvaluate = {
-              box: valueCodificado.slice(0, 5),
-              supplier: valueCodificado.slice(6, 14),
-              tag: valueCodificado.slice(21, 26)
-            }
+        //verifico si aun no hay caja a copntrolar asigno a la variable
+        if (inputTagToChange === null) {
+          inputTagToChange = {
+            rawCode: inputData,
+            box: inputData.slice(0, 5),
+            supplier: inputData.slice(6, 14),
+            tag: inputData.slice(21, 28)
           }
-
-          if (dataToEvaluate.tag === valueCodificado.slice(21, 26) && dataToEvaluate.supplier === valueCodificado.slice(6, 14) && dataToEvaluate.box === valueCodificado.slice(0, 5)) {
-            result.box = valueCodificado.slice(21, 26)
-            result.exadecimal = cellData
-            result.valueCodificado = valueCodificado
-            addLogEntry({
-              timestamp: getFormattedTimestamp(),
-              message: 'Nuevo registro', valueCodificado
-
-            });
-          } else {
-            lecturuasErrorneas.push(valueCodificado)
-            addLogEntry({
-              timestamp: getFormattedTimestamp(),
-              message: `ERROR:La caja no pertenece a los tags evaluados:`, valueCodificado
-            });
-            return null
-          }
-
-
+          input.focus()
+          return null
         }
-      } catch (e) {
-        console.error("Error en la conversión:", e);
+
+        //verifico si aun no hay caja a copntrolar asigno a la variable
+        if (inputTagChanged === null) {
+          inputTagChanged = {
+            rawCode: inputData,
+            box: inputData.slice(0, 5),
+            supplier: inputData.slice(6, 14),
+            tag: inputData.slice(21, 26)
+          }
+          input.focus()
+          return null
+        }
+
+        lecturasAdiocionales.push(inputData)
         addLogEntry({
           timestamp: getFormattedTimestamp(),
-          message: 'ERROR:Error en la conversión', e
+          message: `ERROR:tags leidos de mas ${inputData}`
+        });
+      } catch (e) {
+        console.log("🚀 ~ file: validate-change-tag.html:229 ~ asigData ~ e:", e)
+
+        addLogEntry({
+          timestamp: getFormattedTimestamp(),
+          message: 'ERROR:file: validate-change-tag.html:229 ~ asigData ~ e', e
 
         });
 
       }
+        console.log("🚀 ~ file: validate-change-tag.html:275 ~ asigData ~ lecturasAdiocionales:", lecturasAdiocionales)
 
       input.focus()
-      return result;
+
     };
+
+
+    const validateEqualTag = (tag1, tag2) => {
+      if (tag1.rawCode.trim() === tag2.rawCode.trim()) {
+        setMessage(alertHTML,"El tag cambiado es Correcto!","alert-success")
+        addLogEntry({
+          timestamp: getFormattedTimestamp(),
+          message: `Los tags son iguales ${tag1}=${tag2}`
+
+        });
+        return true
+      } else {
+        setMessage(alertHTML,`No coinciden :( `,"alert-danger")
+        return false
+      }
+    }
+
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' || event.keyCode === 13) {
         // Capturar el valor del input
-        const inputValue = input.value;
-        if (inputValue.length == 32) {
-          //console.log(convertirData(inputValue))
-          let dataConvert = convertirData(inputValue.trim())
-          if (dataConvert != null) addIfNotExists(results, dataConvert);
+        let inputValue = input.value;
+        if (inputValue.length == 28) {
 
+          let result
+          //console.log(asigData(inputValue))
+          asigData(inputValue.trim())
+          if (inputTagToChange != null && inputTagChanged != null) {            
+            console.log("🚀 ~ file: validate-change-tag.html:287 ~ inputTagToChange != null && inputTagChanged != null:", inputTagToChange, inputTagChanged )
+            result = validateEqualTag(inputTagToChange, inputTagChanged)
+
+          }
+
+          renderTable()
           input.value = '';
         } else {
+          setMessage(alertHTML,`El codigo escaneado no es el corecto. Intenta nuevamente`,"alert-warning")
+          setTimeout(() => {
+            alertHTML.style.display='none'
+          }, 2000);
           addLogEntry({
             timestamp: getFormattedTimestamp(),
             message: 'El codigo no tiene la qty correcta:',
-            valueCodificado: inputValue
+            inputData: inputValue
           });
+          inputValue=null
           input.value = '';
-
         }
-
         event.preventDefault();
 
-        renderTable()
-        renderTableError()
       }
 
     });
 
     const renderTable = () => {
-
-      labelTag.textContent = results[0].valueCodificado.slice(21, 26)
-      labelBox.textContent  = results[0].valueCodificado.slice(0, 5)
-      labelSup.textContent  = results[0].valueCodificado.slice(6, 14)
-      results.sort((a, b) => a.valueCodificado.localeCompare(b.valueCodificado));
-      resultsTable.innerHTML = '';
-
-      results.forEach((result, index) => {
+      if (inputTagToChange != null) {
+        labelTag.textContent = inputTagToChange.tag
+        labelBox.textContent = inputTagToChange.box
+        labelSup.textContent = inputTagToChange.supplier
+        resultsTable.innerHTML = '';
         const row = resultsTable.insertRow();
-        row.insertCell(0).textContent = index + 1;
-        row.insertCell(1).textContent = result.valueCodificado;
-        row.insertCell(2).textContent = "Cara:" + result.valueCodificado.slice(27, 28);
-        
-      });
-      console.log("🚀 ~ results.forEach ~ results:", results.length)
+        row.insertCell(0).textContent = '૰';
+        row.insertCell(1).textContent = inputTagToChange.rawCode;
+
+        sectionChanged.style.display="block"
+      }
       
-      if (results.length==4) {alertOk.style.display='block'}
+      if (inputTagChanged != null) {
+        labelTagChan.textContent = inputTagChanged.tag
+        labelBoxChan.textContent = inputTagChanged.box
+        labelSupChan.textContent = inputTagChanged.supplier
+        resultsTagChanged.innerHTML = '';
+        const row = resultsTagChanged.insertRow();
+        row.insertCell(0).textContent = '૰';
+        row.insertCell(1).textContent = inputTagChanged.rawCode;
+      }
+      if (lecturasAdiocionales != null) renderTableError()
+
+      console.log("🚀 ~ results.forEach ~ results:", results.length)
+
+      //if (results.length==4) {alertOk.style.display='block'}
 
 
     };
     const renderTableError = () => {
-
-
       tableError.innerHTML = '';
-
-      lecturuasErrorneas.forEach((valor, clave) => {
+      lecturasAdiocionales.forEach((valor, clave) => {
         labelTittleErr.style.display = 'block'
         tableE.style.display = 'block'
         const rowErr = tableError.insertRow()
