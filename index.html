@@ -167,6 +167,7 @@ if ('serviceWorker' in navigator) {
                 message: 'Nuevo registro agregado', dataConvert
 
               });
+              renderTable()
             } else {
               addLogEntry({
                 timestamp: getFormattedTimestamp(),
@@ -189,7 +190,7 @@ if ('serviceWorker' in navigator) {
 
           event.preventDefault();
 
-          renderTable()
+          
         }
 
       });
