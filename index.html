@@ -6,10 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hanheld Toyota</title>
   <link rel="icon" href="./toyota.ico" type="image/x-icon">
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  
+
 </head>
 
 <style>
@@ -20,7 +19,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary  px-1">
-    
+
     <div class="container-fluid">
       <a class="navbar-brand" href="./index.html">
         <img src="./toyotaicon.svg" alt="Logo" width="45" height="38" class="d-inline-block align-text-top">
@@ -33,395 +32,16 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="./index.html">Home</a>
+            <a class="nav-link " aria-current="page" href="./inventario.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./index.html">Inventario Tags</a>
+            <a class="nav-link" href="./inventario.html">Inventario Tags</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./validate-change-tag.html">Control cambio Tag</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href=".<!doctype html>
-              <html lang="en">
-              
-              <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title>Hanheld Toyota</title>
-                <link rel="icon" href="./toyota.ico" type="image/x-icon">
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-                  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-              
-              </head>
-              
-              <style>
-                * {
-                  font-size: 0.9rem;
-                }
-              </style>
-              
-              <body>
-                <nav class="navbar navbar-expand-lg bg-body-tertiary  px-1">
-              
-                  <div class="container-fluid">
-                    <a class="navbar-brand" href="./index.html">
-                      <img src="./toyotaicon.svg" alt="Logo" width="45" height="38" class="d-inline-block align-text-top">
-                    </a>
-                    <h5 style="padding-top: 11px;">Inventario </h5>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                      <ul class="navbar-nav">
-                        <li class="nav-item">
-                          <a class="nav-link " aria-current="page" href="./inventario.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="./inventario.html">Inventario Tags</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="./validate-change-tag.html">Control cambio Tag</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " href="./check-tags.html">Check 4 tags</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " href="./log.html">Registro del sistema</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <form class="d-flex" role="search">
-                      <input class="form-control me-2" id="inputCode" type="search" placeholder="Code" aria-label="Search">
-                      <button class="btn btn-danger" id="download-btn" type="submit">Descargar</button>
-                    </form>
-                  </div>
-                </nav>
-              
-                <h5 class="text-center">Cantidades</h5>
-                <table class="table">
-                  <thead>
-                    <tr>
-              
-                      <th class="text-center" scope="col">Cant Cajas</th>
-                      <th class="text-center" scope="col">Qty Tags leidos</th>
-                      <th class="d-none" scope="col">Handle</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-center" id="qtyBox">0</td>
-                      <td class="text-center" id="qtyTag">0</td>
-                      <td class="d-none">@mdo</td>
-                    </tr>
-              
-                  </tbody>
-                </table>
-                <h4>Detalle Lecturas</h4>
-                <table class="table detail">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col" class="header-hex">Cod Heax</th>
-                      <th scope="col" class="header-cod">Cod Caja</th>
-              
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row"></th>
-                      <td class="row-hex"></td>
-                      <td class="header-box"></td>
-              
-                    </tr>
-              
-                  </tbody>
-                </table>
-              
-              
-              
-              
-                <script>
-                  if ('serviceWorker' in navigator) {
-                    window.addEventListener('load', () => {
-                      navigator.serviceWorker.register('./service-worker.js')
-                        .then((registration) => {
-                          console.log('Service Worker registrado con éxito:', registration.scope);
-              
-                          // Verificar si hay una nueva versión del Service Worker
-                          registration.onupdatefound = () => {
-                            const installingWorker = registration.installing;
-                            installingWorker.onstatechange = () => {
-                              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // Nueva versión disponible
-                                console.log('Nueva versión disponible. Por favor, recarga la página.');
-                                if (confirm('Hay una nueva versión disponible. ¿Quieres actualizar?')) {
-                                  window.location.reload();
-                                }
-                              }
-                            };
-                          };
-                        })
-                        .catch((error) => {
-                          console.log('Service Worker registro fallido:', error);
-                        });
-              
-                      // Forzar la actualización del SW cuando hay una nueva versión
-                      navigator.serviceWorker.addEventListener('controllerchange', () => {
-                        window.location.reload();
-                      });
-                    });
-                  }
-                  const labelQtyBox = document.getElementById("qtyBox");
-                  const labelQtyTag = document.getElementById("qtyTag");
-                  const input = document.getElementById('inputCode');
-                  const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
-                  input.focus();
-                  const resultsTable = document.querySelector('.table.detail tbody');
-                  const results = new Map();  // Usaremos Map para asociar valueCodificado a sus datos
-                  let pendingData = [];  // Array para almacenar datos pendientes de procesamiento
-                  const MAX_LOG_ENTRIES = 100;
-              
-                  // Función para convertir datos (sin cambios)
-                  const convertirData = (cellData) => {
-                    let valueCodificado = '';
-                    let result = {
-                      box: '',
-                      exadecimal: '',
-                      valueCodificado: ''
-                    };
-              
-                    try {
-                      const numPacking = parseInt(cellData.substring(12, 17), 16);
-                      const decodedPacking = String(numPacking).padStart(5, '0');
-                      valueCodificado += decodedPacking + ";";
-              
-                      const numNosequees = parseInt(cellData.substring(17, 23), 16);
-                      const decodedNosequees = String(numNosequees).padStart(7, '0');
-                      valueCodificado += decodedNosequees.slice(0, 6) + "-" + decodedNosequees.slice(6) + ";";
-              
-                      const uno = parseInt(cellData[23], 16);
-                      valueCodificado += uno + ";";
-              
-                      const B = cellData.substring(24, 26);
-                      const asciiB = hexToAscii(B);
-                      valueCodificado += asciiB + ";";
-              
-                      const dos = parseInt(cellData[26], 16);
-                      valueCodificado += dos + ";";
-              
-                      const numId = parseInt(cellData.substring(27, 34), 16);
-                      const decodedId = String(numId).padStart(6, '0');
-                      valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
-                      result.box = valueCodificado.slice(21, 26);
-                      result.exadecimal = cellData;
-                      result.valueCodificado = valueCodificado;
-              
-                    } catch (e) {
-                      console.error("Error en la conversión:", e);
-                      addLogEntry({
-                        timestamp: getFormattedTimestamp(),
-                        message: 'ERROR: Error en la conversión', e
-                      });
-                    }
-              
-                    return result;
-                  };
-              
-                  // Función para renderizar la tabla
-                  const renderTable = () => {
-                    const cantCajas = new Set();
-                    const fragment = document.createDocumentFragment();
-              
-                    Array.from(results.values()).forEach((result, index) => {
-                      cantCajas.add(result.box);
-              
-                      const row = document.createElement('tr');
-                      const cellIndex = document.createElement('td');
-                      const cellValueCodificado = document.createElement('td');
-                      const cellBox = document.createElement('td');
-              
-                      cellIndex.textContent = index + 1;
-                      cellValueCodificado.textContent = result.valueCodificado;
-                      cellBox.textContent = result.box;
-              
-                      row.appendChild(cellIndex);
-                      row.appendChild(cellValueCodificado);
-                      row.appendChild(cellBox);
-              
-                      fragment.appendChild(row);
-                    });
-              
-                    resultsTable.innerHTML = '';
-                    resultsTable.appendChild(fragment);
-              
-                    console.log(cantCajas);
-                    labelQtyTag.innerHTML = results.size;
-                    labelQtyBox.innerHTML = cantCajas.size;
-              
-                    // Oculta el mensaje de procesamiento al finalizar
-                    processingMessage.style.display = 'none';
-                  };
-              
-                  // Función debounce para el procesamiento de datos pendientes
-                  function debounce(func, wait) {
-                    let timeout;
-                    return function (...args) {
-                      clearTimeout(timeout);
-                      timeout = setTimeout(() => func.apply(this, args), wait);
-                    };
-                  }
-              
-                  // Procesamiento de datos pendientes
-                  const processPendingData = () => {
-                    if (pendingData.length > 0) {
-                      // processingMessage.style.display = 'block';  // Mostrar mensaje de procesamiento
-                      const dataConvert = pendingData.shift();
-                      if (!results.has(dataConvert.valueCodificado)) {
-                        results.set(dataConvert.valueCodificado, dataConvert);
-                        console.log("Objeto agregado:", dataConvert);
-                      } else {
-                        addLogEntry({
-                          timestamp: getFormattedTimestamp(),
-                          message: 'ERROR: La etiqueta ya fue escaneada anteriormente',
-                          dataConvert
-                        });
-                        console.log("El objeto con valueCodificado ya existe en el array.");
-                      }
-                      requestAnimationFrame(processPendingData);
-                    } else {
-                      renderTable();
-                    }
-                  };
-              
-                  const debouncedProcessPendingData = debounce(processPendingData, 50);
-              
-                  // Event listener para la entrada de datos
-                  input.addEventListener('keydown', function (event) {
-                    if (event.key === 'Enter' || event.keyCode === 13) {
-                      const inputValue = input.value;
-              
-                      if (inputValue.length == 32) {
-                        const dataConvert = convertirData(inputValue.trim());
-                        pendingData.push(dataConvert);
-                        debouncedProcessPendingData();
-                        input.value = '';
-                      } else {
-                        addLogEntry({
-                          timestamp: getFormattedTimestamp(),
-                          message: 'ERROR: El código no tiene la longitud correcta',
-                          valueCodificado: inputValue
-                        });
-                        input.value = '';
-                      }
-              
-              
-                      event.preventDefault();
-                      input.focus();
-                    }
-                  });
-              
-                  // Función para convertir hexadecimal a ASCII (sin cambios)
-                  function hexToAscii(hex) {
-                    let str = '';
-                    for (let i = 0; i < hex.length; i += 2) {
-                      str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
-                    }
-                    return str;
-                  }
-              
-              
-              
-              
-              
-                  /*LOG DE SISTEMA*/
-              
-              
-                  function getFormattedTimestamp() {
-                    const now = new Date();
-                    const year = now.getFullYear();
-                    const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11, por eso sumamos 1
-                    const day = String(now.getDate()).padStart(2, '0');
-                    const hours = String(now.getHours()).padStart(2, '0');
-                    const minutes = String(now.getMinutes()).padStart(2, '0');
-                    const seconds = String(now.getSeconds()).padStart(2, '0');
-              
-                    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                  }
-                  // Función para obtener el log desde localStorage
-                  function getLog() {
-                    let log = localStorage.getItem('systemLog');
-                    return log ? JSON.parse(log) : [];
-                  }
-              
-                  // Función para guardar el log en localStorage
-                  function saveLog(log) {
-                    localStorage.setItem('systemLog', JSON.stringify(log));
-                  }
-              
-                  // Función para agregar un nuevo registro al log
-                  function addLogEntry(entry) {
-                    let log = getLog();
-              
-                    // Verificar si se ha alcanzado el límite de registros
-                    if (log.length >= MAX_LOG_ENTRIES) {
-                      // Eliminar el registro más antiguo (primer elemento del array)
-                      log.shift();
-                    }
-              
-                    // Agregar el nuevo registro al final del array
-                    log.push(entry);
-              
-                    // Guardar el log actualizado en localStorage
-                    saveLog(log);
-                  }
-              
-                  // Ejemplo de cómo agregar un nuevo registro
-              
-              
-                  // Función para obtener todos los registros del log
-                  function getAllLogEntries() {
-                    return getLog();
-                  }
-              
-                  // Función para formatear los datos del array como una cadena de texto
-                  function formatLogData(data) {
-                    return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
-                  }
-              
-              
-                  // Función para descargar el archivo TXT
-                  function downloadTxtFile(filename, text) {
-                    const blob = new Blob([text], { type: 'text/plain' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }
-              
-                  document.getElementById('download-btn').addEventListener('click', () => {
-                    event.preventDefault();
-                    const formattedLog = formatLogData(results);
-                    downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
-                  });
-              
-              
-                  
-                </script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                  integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                  crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-                  integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-                  crossorigin="anonymous"></script>
-              
-              
-              </body>
-              
-              </html>/check-tags.html">Check 4 tags</a>
+            <a class="nav-link " href="./check-tags.html">Check 4 tags</a>
           </li>
           <li class="nav-item">
             <a class="nav-link " href="./log.html">Registro del sistema</a>
@@ -436,50 +56,50 @@
   </nav>
 
   <h5 class="text-center">Cantidades</h5>
-    <table class="table">
-      <thead>
-        <tr>
+  <table class="table">
+    <thead>
+      <tr>
 
-          <th class="text-center" scope="col">Cant Cajas</th>
-          <th class="text-center" scope="col">Qty Tags leidos</th>
-          <th class="d-none" scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="text-center" id="qtyBox">0</td>
-          <td class="text-center" id="qtyTag">0</td>
-          <td class="d-none">@mdo</td>
-        </tr>
+        <th class="text-center" scope="col">Cant Cajas</th>
+        <th class="text-center" scope="col">Qty Tags leidos</th>
+        <th class="d-none" scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center" id="qtyBox">0</td>
+        <td class="text-center" id="qtyTag">0</td>
+        <td class="d-none">@mdo</td>
+      </tr>
 
-      </tbody>
-    </table>
-    <h4>Detalle Lecturas</h4>
-    <table class="table detail">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col" class="header-hex">Cod Heax</th>
-          <th scope="col" class="header-cod">Cod Caja</th>
+    </tbody>
+  </table>
+  <h4>Detalle Lecturas</h4>
+  <table class="table detail">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" class="header-hex">Cod Heax</th>
+        <th scope="col" class="header-cod">Cod Caja</th>
 
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row"></th>
-          <td class="row-hex"></td>
-          <td class="header-box"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"></th>
+        <td class="row-hex"></td>
+        <td class="header-box"></td>
 
-        </tr>
+      </tr>
 
-      </tbody>
-    </table>
-
-
+    </tbody>
+  </table>
 
 
-    <script>
-if ('serviceWorker' in navigator) {
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
           .then((registration) => {
@@ -509,227 +129,249 @@ if ('serviceWorker' in navigator) {
         });
       });
     }
+    const labelQtyBox = document.getElementById("qtyBox");
+    const labelQtyTag = document.getElementById("qtyTag");
+    const input = document.getElementById('inputCode');
+    //const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
+    input.focus();
+    const resultsTable = document.querySelector('.table.detail tbody');
+    const results = new Map();  // Usaremos Map para asociar valueCodificado a sus datos
+    let pendingData = [];  // Array para almacenar datos pendientes de procesamiento
+    const MAX_LOG_ENTRIES = 100;
 
-      const labelQtyBox = document.getElementById("qtyBox")
-      const labelQtyTag = document.getElementById("qtyTag")
-      // Obtener el elemento input por su ID
-      const input = document.getElementById('inputCode');
-      input.focus()
-      console.log(input)
-      const resultsTable = document.querySelector('.table.detail tbody');
-
-      const results = [];
-      // límite de registros de LOGS
-      const MAX_LOG_ENTRIES = 100;
-
-      // Función para verificar si el objeto ya existe
-      function existsInArray(array, item, attribute) {
-        return array.some(element => element[attribute] === item[attribute]);
-      }
-
-
-
-      input.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.keyCode === 13) {
-          // Capturar el valor del input
-          const inputValue = input.value;
-          if (inputValue.length == 32) {
-            //console.log(convertirData(inputValue))
-            let dataConvert = convertirData(inputValue.trim())
-            // console.log(dataConvert);
-            if (!existsInArray(results, dataConvert, "valueCodificado")) {
-              // Si no existe, agregar al array
-              results.push(dataConvert);
-              console.log("Objeto agregado:", dataConvert);
-              
-              renderTable()
-            } else {
-              addLogEntry({
-                timestamp: getFormattedTimestamp(),
-                message: 'ERROR:La etiqueta,ya fue escaneada anteriormente', dataConvert
-
-              });
-              console.log("El objeto con valueCodificado ya existe en el array.");
-            }
-
-            input.value = '';
-          } else {
-            addLogEntry({
-              timestamp: getFormattedTimestamp(),
-              message: 'ERROR:El codigo no tiene la qty correcta:',
-              valueCodificado: inputValue
-            });
-            input.value = '';
-
-          }
-
-          event.preventDefault();
-
-          
-        }
-
-      });
-
-      const renderTable = () => {
-        const cantCajas = new Set()
-
-        resultsTable.innerHTML = '';
-        let resultadoCantCaja
-        results.forEach((result, index) => {
-          cantCajas.add(result.box)
-          const row = resultsTable.insertRow();
-          row.insertCell(0).textContent = index + 1;
-          row.insertCell(1).textContent = result.valueCodificado;
-          row.insertCell(2).textContent = result.box;
-
-        });
-        console.log(cantCajas);
-        labelQtyTag.innerHTML = results.length
-        labelQtyBox.innerHTML = cantCajas.size
+    // Función para convertir datos (sin cambios)
+    const convertirData = (cellData) => {
+      let valueCodificado = '';
+      let result = {
+        box: '',
+        exadecimal: '',
+        valueCodificado: ''
       };
 
-      function hexToAscii(hex) {
-        let str = '';
-        for (let i = 0; i < hex.length; i += 2) {
-          str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
-        }
-        return str;
+      try {
+        const numPacking = parseInt(cellData.substring(12, 17), 16);
+        const decodedPacking = String(numPacking).padStart(5, '0');
+        valueCodificado += decodedPacking + ";";
+
+        const numNosequees = parseInt(cellData.substring(17, 23), 16);
+        const decodedNosequees = String(numNosequees).padStart(7, '0');
+        valueCodificado += decodedNosequees.slice(0, 6) + "-" + decodedNosequees.slice(6) + ";";
+
+        const uno = parseInt(cellData[23], 16);
+        valueCodificado += uno + ";";
+
+        const B = cellData.substring(24, 26);
+        const asciiB = hexToAscii(B);
+        valueCodificado += asciiB + ";";
+
+        const dos = parseInt(cellData[26], 16);
+        valueCodificado += dos + ";";
+
+        const numId = parseInt(cellData.substring(27, 34), 16);
+        const decodedId = String(numId).padStart(6, '0');
+        valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
+        result.box = valueCodificado.slice(21, 26);
+        result.exadecimal = cellData;
+        result.valueCodificado = valueCodificado;
+
+      } catch (e) {
+        console.error("Error en la conversión:", e);
+        addLogEntry({
+          timestamp: getFormattedTimestamp(),
+          message: 'ERROR: Error en la conversión', e
+        });
       }
 
+      return result;
+    };
 
-      const convertirData = (cellData) => {
-        event.preventDefault();
-        let valueCodificado = '';
-        let result = {
-          box: '',
-          exadecimal: '',
-          valueCodificado: ''
-        };
-        let arrResult = []
+    // Función para renderizar la tabla
+    const renderTable = () => {
+      const cantCajas = new Set();
+      const fragment = document.createDocumentFragment();
 
-        try {
-          if (cellData.startsWith("A")) {
-            const numPacking = parseInt(cellData.substring(12, 17), 16);
-            const decodedPacking = String(numPacking).padStart(5, '0');
-            valueCodificado += decodedPacking + ";";
+      Array.from(results.values()).forEach((result, index) => {
+        cantCajas.add(result.box);
 
-            const numNosequees = parseInt(cellData.substring(17, 23), 16);
-            const decodedNosequees = String(numNosequees).padStart(7, '0');
-            valueCodificado += decodedNosequees.slice(0, 6) + "-" + decodedNosequees.slice(6) + ";";
+        const row = document.createElement('tr');
+        const cellIndex = document.createElement('td');
+        const cellValueCodificado = document.createElement('td');
+        const cellBox = document.createElement('td');
 
-            const uno = parseInt(cellData[23], 16);
-            valueCodificado += uno + ";";
+        cellIndex.textContent = index + 1;
+        cellValueCodificado.textContent = result.valueCodificado;
+        cellBox.textContent = result.box;
 
-            const B = cellData.substring(24, 26);
-            const asciiB = hexToAscii(B);
-            valueCodificado += asciiB + ";";
+        row.appendChild(cellIndex);
+        row.appendChild(cellValueCodificado);
+        row.appendChild(cellBox);
 
-            const dos = parseInt(cellData[26], 16);
-            valueCodificado += dos + ";";
+        fragment.appendChild(row);
+      });
 
-            const numId = parseInt(cellData.substring(27, 34), 16);
-            const decodedId = String(numId).padStart(6, '0');
-            valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
-            result.box = valueCodificado.slice(21, 26)
-            result.exadecimal = cellData
-            result.valueCodificado = valueCodificado
+      resultsTable.innerHTML = '';
+      resultsTable.appendChild(fragment);
 
+      console.log(cantCajas);
+      labelQtyTag.innerHTML = results.size;
+      labelQtyBox.innerHTML = cantCajas.size;
 
-          }
-        } catch (e) {
-          console.error("Error en la conversión:", e);
+      // Oculta el mensaje de procesamiento al finalizar
+      //processingMessage.style.display = 'none';
+    };
+
+    // Función debounce para el procesamiento de datos pendientes
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Procesamiento de datos pendientes
+    const processPendingData = () => {
+      if (pendingData.length > 0) {
+        // processingMessage.style.display = 'block';  // Mostrar mensaje de procesamiento
+        const dataConvert = pendingData.shift();
+        if (!results.has(dataConvert.valueCodificado)) {
+          results.set(dataConvert.valueCodificado, dataConvert);
+          console.log("Objeto agregado:", dataConvert);
+        } else {
           addLogEntry({
             timestamp: getFormattedTimestamp(),
-            message: 'ERROR:Error en la conversión', e
+            message: 'ERROR: La etiqueta ya fue escaneada anteriormente',
+            dataConvert
           });
+          console.log("El objeto con valueCodificado ya existe en el array.");
         }
-        input.focus()
-        return result;
-      };
-
-
-
-
-      /*LOG DE SISTEMA*/
-
-
-      function getFormattedTimestamp() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11, por eso sumamos 1
-        const day = String(now.getDate()).padStart(2, '0');
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        requestAnimationFrame(processPendingData);
+      } else {
+        renderTable();
       }
-      // Función para obtener el log desde localStorage
-      function getLog() {
-        let log = localStorage.getItem('systemLog');
-        return log ? JSON.parse(log) : [];
-      }
+    };
 
-      // Función para guardar el log en localStorage
-      function saveLog(log) {
-        localStorage.setItem('systemLog', JSON.stringify(log));
-      }
+    const debouncedProcessPendingData = debounce(processPendingData, 50);
 
-      // Función para agregar un nuevo registro al log
-      function addLogEntry(entry) {
-        let log = getLog();
+    // Event listener para la entrada de datos
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        const inputValue = input.value;
 
-        // Verificar si se ha alcanzado el límite de registros
-        if (log.length >= MAX_LOG_ENTRIES) {
-          // Eliminar el registro más antiguo (primer elemento del array)
-          log.shift();
+        if (inputValue.length == 32) {
+          const dataConvert = convertirData(inputValue.trim());
+          pendingData.push(dataConvert);
+          debouncedProcessPendingData();
+          input.value = '';
+        } else {
+          addLogEntry({
+            timestamp: getFormattedTimestamp(),
+            message: 'ERROR: El código no tiene la longitud correcta',
+            valueCodificado: inputValue
+          });
+          input.value = '';
         }
 
-        // Agregar el nuevo registro al final del array
-        log.push(entry);
 
-        // Guardar el log actualizado en localStorage
-        saveLog(log);
-      }
-
-      // Ejemplo de cómo agregar un nuevo registro
-
-
-      // Función para obtener todos los registros del log
-      function getAllLogEntries() {
-        return getLog();
-      }
-
-      // Función para formatear los datos del array como una cadena de texto
-      function formatLogData(data) {
-        return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
-      }
-
-
-      // Función para descargar el archivo TXT
-      function downloadTxtFile(filename, text) {
-        const blob = new Blob([text], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      document.getElementById('download-btn').addEventListener('click', () => {
         event.preventDefault();
-        const formattedLog = formatLogData(results);
-        downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
-      });
+        input.focus();
+      }
+    });
 
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-      crossorigin="anonymous"></script>
+    // Función para convertir hexadecimal a ASCII (sin cambios)
+    function hexToAscii(hex) {
+      let str = '';
+      for (let i = 0; i < hex.length; i += 2) {
+        str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
+      }
+      return str;
+    }
+
+
+
+
+
+    /*LOG DE SISTEMA*/
+
+
+    function getFormattedTimestamp() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11, por eso sumamos 1
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    // Función para obtener el log desde localStorage
+    function getLog() {
+      let log = localStorage.getItem('systemLog');
+      return log ? JSON.parse(log) : [];
+    }
+
+    // Función para guardar el log en localStorage
+    function saveLog(log) {
+      localStorage.setItem('systemLog', JSON.stringify(log));
+    }
+
+    // Función para agregar un nuevo registro al log
+    function addLogEntry(entry) {
+      let log = getLog();
+
+      // Verificar si se ha alcanzado el límite de registros
+      if (log.length >= MAX_LOG_ENTRIES) {
+        // Eliminar el registro más antiguo (primer elemento del array)
+        log.shift();
+      }
+
+      // Agregar el nuevo registro al final del array
+      log.push(entry);
+
+      // Guardar el log actualizado en localStorage
+      saveLog(log);
+    }
+
+    // Ejemplo de cómo agregar un nuevo registro
+
+
+    // Función para obtener todos los registros del log
+    function getAllLogEntries() {
+      return getLog();
+    }
+
+    // Función para formatear los datos del array como una cadena de texto
+    function formatLogData(dataSet) {
+  return [...dataSet].map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
+}
+
+    // Función para descargar el archivo TXT
+    function downloadTxtFile(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.getElementById('download-btn').addEventListener('click', () => {
+      event.preventDefault();
+      const formattedLog = formatLogData(results);
+      downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
+    });
+
+
+    
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
 
 
 </body>

@@ -132,7 +132,7 @@
     const labelQtyBox = document.getElementById("qtyBox");
     const labelQtyTag = document.getElementById("qtyTag");
     const input = document.getElementById('inputCode');
-    const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
+   // const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
     input.focus();
     const resultsTable = document.querySelector('.table.detail tbody');
     const results = new Map();  // Usaremos Map para asociar valueCodificado a sus datos
@@ -217,7 +217,7 @@
       labelQtyBox.innerHTML = cantCajas.size;
 
       // Oculta el mensaje de procesamiento al finalizar
-      processingMessage.style.display = 'none';
+      //processingMessage.style.display = 'none';
     };
 
     // Función debounce para el procesamiento de datos pendientes
@@ -342,10 +342,9 @@
     }
 
     // Función para formatear los datos del array como una cadena de texto
-    function formatLogData(data) {
-      return data.map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
-    }
-
+    function formatLogData(dataSet) {
+  return [...dataSet].map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
+}
 
     // Función para descargar el archivo TXT
     function downloadTxtFile(filename, text) {

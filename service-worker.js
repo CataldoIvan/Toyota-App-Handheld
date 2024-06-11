@@ -2,6 +2,7 @@ const CACHE_NAME = 'handheld-toyota-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
+  './inventario.html',
   './check-tags.html',
   './log.html',
   './validate-change-tag.html',
