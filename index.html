@@ -343,7 +343,7 @@
 
     // Función para formatear los datos del array como una cadena de texto
     function formatLogData(dataSet) {
-  return [...dataSet].map(entry => `${entry.box} ${entry.valueCodificado} ${entry.exadecimal}`).join('\n');
+      return [...dataSet].map(entry => `${entry[1].box} ${entry[1].valueCodificado} ${entry[1].exadecimal}`).join('\n');
 }
 
     // Función para descargar el archivo TXT

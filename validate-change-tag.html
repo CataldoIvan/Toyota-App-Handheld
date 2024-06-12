@@ -62,7 +62,7 @@
 
         <th class="text-center" scope="col">Caja</th>
         <th class="text-center" scope="col">Proveedor</th>
-        <th class="" scope="col">Tag</th>
+       
       </tr>
     </thead>
 
@@ -70,7 +70,7 @@
       <tr>
         <td class="text-center" id="BoxToChange">0</td>
         <td class="text-center" id="supToChange">0</td>
-        <td class="" id="tagToChange">0</td>
+       
       </tr>
 
     </tbody>
@@ -107,7 +107,7 @@
 
         <th class="text-center" scope="col">Caja</th>
         <th class="text-center" scope="col">Proveedor</th>
-        <th class="" scope="col">Tag</th>
+        
       </tr>
     </thead>
     <!--************************-->
@@ -115,7 +115,7 @@
       <tr>
         <td class="text-center" id="BoxChanged">0</td>
         <td class="text-center" id="supChanged">0</td>
-        <td class="" id="tagChanged">0</td>
+    
       </tr>
 
     </tbody>
@@ -183,10 +183,10 @@
     let lecturasAdiocionales = []
 
     const alertHTML = document.querySelector('.alert')
-    const labelTag = document.getElementById('tagToChange')
+    //const labelTag = document.getElementById('tagToChange')
     const labelBox = document.getElementById('BoxToChange')
     const labelSup = document.getElementById('supToChange')
-    const labelTagChan = document.getElementById('tagChanged')
+    // labelTagChan = document.getElementById('tagChanged')
     const labelBoxChan = document.getElementById('BoxChanged')
     const labelSupChan = document.getElementById('supChanged')
     const labelTittleErr = document.querySelector('.tittle-error')
@@ -218,19 +218,24 @@
       event.preventDefault();
       try {
         //verifico si aun no hay caja a copntrolar asigno a la variable
-        if (inputTagToChange === null) {
+        if (inputTagToChange === null && inputData.length==31) {
           inputTagToChange = {
             rawCode: inputData,
             box: inputData.slice(0, 5),
-            supplier: inputData.slice(6, 14),
+            supplier: inputData.slice(6, 12),
             tag: inputData.slice(21, 28)
           }
           input.focus()
           return null
+        }else{
+          setMessage(alertHTML,`1.Tenes que escanear el codigo de la caja antigua. Intenta nuevamente`,"alert-warning")
+          setTimeout(() => {
+            alertHTML.style.display='none'
+          }, 2000);
         }
 
         //verifico si aun no hay caja a copntrolar asigno a la variable
-        if (inputTagChanged === null) {
+        if (inputTagChanged === null && inputData.length==28 && inputTagToChange!=null) {
           inputTagChanged = {
             rawCode: inputData,
             box: inputData.slice(0, 5),
@@ -239,6 +244,13 @@
           }
           input.focus()
           return null
+        }else{
+          setMessage(alertHTML,`1.Tenes que escanear el codigo de la caja antigua \n
+
+          2.Tenes que escanear el codigo de Tag RFID. Intenta nuevamente`,"alert-warning")
+          setTimeout(() => {
+            alertHTML.style.display='none'
+          }, 4000);
         }
 
         lecturasAdiocionales.push(inputData)
@@ -262,9 +274,13 @@
 
     };
 
+    function removeLeadingZeros(text) {
+  return text.replace(/^0+/, '');
+}
 
     const validateEqualTag = (tag1, tag2) => {
-      if (tag1.rawCode.trim() === tag2.rawCode.trim()) {
+      
+      if (tag1.supplier.trim() === removeLeadingZeros(tag2.supplier) && tag1.box.trim() === tag2.box ) {
         setMessage(alertHTML,"El tag cambiado es Correcto!","alert-success")
         addLogEntry({
           timestamp: getFormattedTimestamp(),
@@ -273,16 +289,18 @@
         });
         return true
       } else {
-        setMessage(alertHTML,`No coinciden :( `,"alert-danger")
+        setMessage(alertHTML,`No coinciden . Intenta nuevamente Las cajas ${tag1.box==tag2.box?"Estan bien":"NO SON IGUALES;"} y el proveedor : ${tag1.supplier==removeLeadingZeros(tag2.supplier)?"son iguales":"NO SON IGUALES"}`,"alert-danger")
         return false
       }
     }
+      
+      
 
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' || event.keyCode === 13) {
         // Capturar el valor del input
         let inputValue = input.value;
-        if (inputValue.length == 28) {
+        if (inputValue.length == 28 || inputValue.length == 31) {
 
           let result
           //console.log(asigData(inputValue))
@@ -299,7 +317,7 @@
           setMessage(alertHTML,`El codigo escaneado no es el corecto. Intenta nuevamente`,"alert-warning")
           setTimeout(() => {
             alertHTML.style.display='none'
-          }, 2000);
+          }, 4000);
           addLogEntry({
             timestamp: getFormattedTimestamp(),
             message: 'El codigo no tiene la qty correcta:',
@@ -316,7 +334,7 @@
 
     const renderTable = () => {
       if (inputTagToChange != null) {
-        labelTag.textContent = inputTagToChange.tag
+        //labelTag.textContent = inputTagToChange.tag
         labelBox.textContent = inputTagToChange.box
         labelSup.textContent = inputTagToChange.supplier
         resultsTable.innerHTML = '';
@@ -328,7 +346,7 @@
       }
       
       if (inputTagChanged != null) {
-        labelTagChan.textContent = inputTagChanged.tag
+        //labelTagChan.textContent = inputTagChanged.tag
         labelBoxChan.textContent = inputTagChanged.box
         labelSupChan.textContent = inputTagChanged.supplier
         resultsTagChanged.innerHTML = '';
