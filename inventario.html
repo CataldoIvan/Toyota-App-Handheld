@@ -15,6 +15,10 @@
   * {
     font-size: 0.9rem;
   }
+  .copied {
+    background: #fff3cd !important;
+    transition: background 0.25s;
+  }
 </style>
 
 <body>
@@ -74,7 +78,7 @@
 
     </tbody>
   </table>
-  <h4>Detalle Lecturas</h4>
+   <h4>Detalle Lecturas <button id="sort-btn" class="btn btn-sm btn-secondary ms-2">Ordenar</button></h4>
   <table class="table detail">
     <thead>
       <tr>
@@ -132,7 +136,7 @@
     const labelQtyBox = document.getElementById("qtyBox");
     const labelQtyTag = document.getElementById("qtyTag");
     const input = document.getElementById('inputCode');
-   // const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
+    //const processingMessage = document.getElementById('processingMessage');  // Nuevo elemento para el mensaje de procesamiento
     input.focus();
     const resultsTable = document.querySelector('.table.detail tbody');
     const results = new Map();  // Usaremos Map para asociar valueCodificado a sus datos
@@ -140,12 +144,13 @@
     const MAX_LOG_ENTRIES = 100;
 
     // Función para convertir datos (sin cambios)
-    const convertirData = (cellData) => {
+   const convertirData = (cellData) => {
       let valueCodificado = '';
       let result = {
         box: '',
         exadecimal: '',
-        valueCodificado: ''
+        valueCodificado: '',
+        timestampInput: ''
       };
 
       try {
@@ -170,10 +175,10 @@
         const numId = parseInt(cellData.substring(27, 34), 16);
         const decodedId = String(numId).padStart(6, '0');
         valueCodificado += decodedId.slice(0, 5) + "-" + decodedId.slice(5);
-        result.box = valueCodificado.slice(21, 26);
-        result.exadecimal = cellData;
-        result.valueCodificado = valueCodificado;
-
+        result.box = valueCodificado.slice(22, 27); // Extraer el código de caja
+        result.exadecimal = cellData; // Guardar el valor hexadecimal original
+        result.valueCodificado = valueCodificado; // Guardar el valor codificado completo
+        result.timestampInput = getFormattedTimestamp(); // Guardar la marca de tiempo
       } catch (e) {
         console.error("Error en la conversión:", e);
         addLogEntry({
@@ -185,7 +190,7 @@
       return result;
     };
 
-    // Función para renderizar la tabla
+// Función para renderizar la tabla
     const renderTable = () => {
       const cantCajas = new Set();
       const fragment = document.createDocumentFragment();
@@ -195,12 +200,17 @@
 
         const row = document.createElement('tr');
         const cellIndex = document.createElement('td');
-        const cellValueCodificado = document.createElement('td');
+        const cellValueCodificado = document.createElement('td'); // columna "Cod Heax"
         const cellBox = document.createElement('td');
 
         cellIndex.textContent = index + 1;
         cellValueCodificado.textContent = result.valueCodificado;
+        cellValueCodificado.dataset.hex = result.exadecimal || ''; // guardo el hex original en data-attribute
+        cellValueCodificado.classList.add('row-hex');
         cellBox.textContent = result.box;
+
+        // Agregar listeners de "press and hold" para copiar el hex original
+        addHoldToCopy(cellValueCodificado);
 
         row.appendChild(cellIndex);
         row.appendChild(cellValueCodificado);
@@ -219,6 +229,7 @@
       // Oculta el mensaje de procesamiento al finalizar
       //processingMessage.style.display = 'none';
     };
+
 
     // Función debounce para el procesamiento de datos pendientes
     function debounce(func, wait) {
@@ -343,9 +354,8 @@
 
     // Función para formatear los datos del array como una cadena de texto
     function formatLogData(dataSet) {
-  return [...dataSet].map(entry => `${entry[1].box} ${entry[1].valueCodificado} ${entry[1].exadecimal}`).join('\n');
+  return [...dataSet].map(entry => `${entry[1].box},${entry[1].valueCodificado},${entry[1].exadecimal},${entry[1].timestampInput}`).join('\n');
 }
-
     // Función para descargar el archivo TXT
     function downloadTxtFile(filename, text) {
       const blob = new Blob([text], { type: 'text/plain' });
@@ -363,7 +373,103 @@
       downloadTxtFile(`${getFormattedTimestamp()}.txt`, formattedLog);
     });
 
+// ...existing code...
 
+    // Vincular y función para ordenar ascendentemente por código de caja
+    function sortResultsByBoxAsc() {
+      const entries = Array.from(results.entries());
+      entries.sort((a, b) => {
+        const boxA = (a[1].box || '').toString();
+        const boxB = (b[1].box || '').toString();
+        return boxA.localeCompare(boxB, undefined, { numeric: true });
+      });
+
+      // Reconstruir el Map en el nuevo orden
+      results.clear();
+      for (const [key, value] of entries) {
+        results.set(key, value);
+      }
+
+      renderTable();
+    }
+
+    const sortBtn = document.getElementById('sort-btn');
+    if (sortBtn) {
+      sortBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sortResultsByBoxAsc();
+      });
+    }
+
+    // Event listener para la entrada de datos
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        const inputValue = input.value;
+      }
+    });
+
+    // Función para copiar texto al portapapeles (con fallback)
+    function copyToClipboard(text) {
+      if (!text) return Promise.reject('No hay texto para copiar');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      } else {
+        // Fallback usando textarea + execCommand
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          return Promise.resolve();
+        } catch (e) {
+          document.body.removeChild(ta);
+          return Promise.reject(e);
+        }
+      }
+    }
+
+    // Añade comportamiento "mantener presionado 2s para copiar" a un elemento
+    function addHoldToCopy(element) {
+      let holdTimer = null;
+      const HOLD_DURATION = 2000; // ms
+
+      const startHold = (e) => {
+        e.preventDefault();
+        if (holdTimer) clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => {
+          const hex = element.dataset.hex || element.textContent || '';
+          copyToClipboard(hex).then(() => {
+            element.classList.add('copied');
+            setTimeout(() => element.classList.remove('copied'), 800);
+            addLogEntry({ timestamp: getFormattedTimestamp(), message: `COPIED: ${hex}` });
+          }).catch((err) => {
+            console.error('Error copiando al portapapeles', err);
+            addLogEntry({ timestamp: getFormattedTimestamp(), message: `ERROR COPIAR: ${err}` });
+          });
+        }, HOLD_DURATION);
+      };
+
+      const cancelHold = () => {
+        if (holdTimer) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      };
+
+      // Mouse events
+      element.addEventListener('mousedown', startHold);
+      element.addEventListener('mouseup', cancelHold);
+      element.addEventListener('mouseleave', cancelHold);
+
+      // Touch events (para dispositivos móviles)
+      element.addEventListener('touchstart', startHold, { passive: false });
+      element.addEventListener('touchend', cancelHold);
+      element.addEventListener('touchcancel', cancelHold);
+    }
     
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
