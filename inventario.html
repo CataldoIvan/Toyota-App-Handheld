@@ -13,7 +13,7 @@
 
 <style>
   * {
-    font-size: 0.9rem;
+    font-size: 0.83rem;
   }
   .copied {
     background: #fff3cd !important;
@@ -88,8 +88,8 @@
 
       </tr>
     </thead>
-    <tbody>
-      <tr>
+    <tbody >
+      <tr >
         <th scope="row"></th>
         <td class="row-hex"></td>
         <td class="header-box"></td>
@@ -191,6 +191,8 @@
     };
 
 // Función para renderizar la tabla
+  // ...existing code...
+    // Función para renderizar la tabla (reemplazar)
     const renderTable = () => {
       const cantCajas = new Set();
       const fragment = document.createDocumentFragment();
@@ -204,13 +206,55 @@
         const cellBox = document.createElement('td');
 
         cellIndex.textContent = index + 1;
-        cellValueCodificado.textContent = result.valueCodificado;
-        cellValueCodificado.dataset.hex = result.exadecimal || ''; // guardo el hex original en data-attribute
-        cellValueCodificado.classList.add('row-hex');
-        cellBox.textContent = result.box;
 
-        // Agregar listeners de "press and hold" para copiar el hex original
-        addHoldToCopy(cellValueCodificado);
+        // Contenedor interno para el hex y el botón de copiar
+        const hexContainer = document.createElement('div');
+        hexContainer.style.display = 'flex';
+        hexContainer.style.alignItems = 'center';
+        hexContainer.style.gap = '0.4rem';
+
+        const hexSpan = document.createElement('span');
+        hexSpan.textContent = result.valueCodificado;
+        hexSpan.dataset.hex = result.exadecimal || ''; // guardo el hex original en data-attribute
+        hexSpan.classList.add('row-hex');
+
+        // ...existing code...
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button'; // evita que el botón haga submit
+        copyBtn.className = 'btn btn-sm btn-outline-secondary';
+        copyBtn.style.padding = '0.15rem 0.4rem';
+        copyBtn.title = 'Copiar hex original';
+     copyBtn.innerText = '<img src="data:image/png;base64,iVBORw0K...">';  
+         // SVG inline para icono de copiar (pequeño, sin dependencia externa)
+      copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+         <path d="M10 1.5A1.5 1.5 0 0 1 11.5 3v8A1.5 1.5 0 0 1 10 12.5H5A1.5 1.5 0 0 1 3.5 11V3A1.5 1.5 0 0 1 5 1.5h5zm-5 1A.5.5 0 0 0 4.5 3v8a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H5z"/>
+          <path d="M1 4.5A1.5 1.5 0 0 1 2.5 3H3v9A1.5 1.5 0 0 0 4.5 13.5h6A1.5 1.5 0 0 0 12 12V3h.5A1.5 1.5 0 0 1 14 4.5v7A1.5 1.5 0 0 1 12.5 13H4.5A1.5 1.5 0 0 1 3 11.5v-7z" fill="none"/>
+         </svg><span class="visually-hidden">Copiar</span>`;
+ // 
+        // click en el botón copia el hex original
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const hex = hexSpan.dataset.hex || hexSpan.textContent || '';
+          copyToClipboard(hex).then(() => {
+            // feedback visual en el botón
+            copyBtn.classList.add('copied');
+            setTimeout(() => copyBtn.classList.remove('copied'), 800);
+            addLogEntry({ timestamp: getFormattedTimestamp(), message: `COPIED: ${hex}` });
+          }).catch((err) => {
+            console.error('Error copiando al portapapeles', err);
+            addLogEntry({ timestamp: getFormattedTimestamp(), message: `ERROR COPIAR: ${err}` });
+          });
+        });
+
+        // Mantener compatibilidad: también agregar comportamiento "hold" sobre el texto
+        addHoldToCopy(hexSpan);
+
+        hexContainer.appendChild(hexSpan);
+        hexContainer.appendChild(copyBtn);
+
+        cellValueCodificado.appendChild(hexContainer);
+        cellBox.textContent = result.box;
 
         row.appendChild(cellIndex);
         row.appendChild(cellValueCodificado);
@@ -225,9 +269,6 @@
       console.log(cantCajas);
       labelQtyTag.innerHTML = results.size;
       labelQtyBox.innerHTML = cantCajas.size;
-
-      // Oculta el mensaje de procesamiento al finalizar
-      //processingMessage.style.display = 'none';
     };
 
 
